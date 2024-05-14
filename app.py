@@ -58,11 +58,8 @@ def convertCode():
     start_index = python_code.find("$start$") + len("$start$")
     stop_index = python_code.find("$end$")
 
-    response = python_code
 
-    response = {"result": response}
-
-    print(response.get("result"))
+    response = {"result": python_code}
 
     print("------------------------------------------------------------------------------")
     return response

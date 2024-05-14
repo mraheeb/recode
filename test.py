@@ -34,7 +34,7 @@ def convert_to_python(input_filename, current_languages):
             file_contents = input_file.read()
 
         # Make POST request to the API
-        api_url = "https://bf7f-202-140-36-183.ngrok-free.app/api/convertCode"
+        api_url = "http://192.168.1.207:5050/api/convertCode"
         target_language = "python"
 
         data = {"query": file_contents,

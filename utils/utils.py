@@ -51,14 +51,15 @@ def translate(query, current_language, target_language, llm):
 {code}
 In the above code;
 Check for following 3 things:
-1. Identify the {current_language} program's purpose and sketch out a similar pseudo-code.
+1. Identify the {current_language} program's purpose.
 2. Identify input parameters, functions, conditions and cases.
 3. Using above points do the following;
-Convert the {current_language} code into similar,equivalent and functional {target_language} code.
-Dont create explicit main function() in generated {target_language} code.
-Always enclose the generated {target_language} code between `$start$` and `$end$`. eg $start$ print("hello world") $end$.
+A. Convert the {current_language} code into similar,equivalent and functional {target_language} code.
+B. Dont create explicit main function() in generated {target_language} code.
+C. Prepend `#` character to all non-{target_language} lines of response.
+D.Always enclose the generated {target_language} code between `$start$` and `$end$`. eg $start$ print("hello world") $end$.
     """
-
+    print("utils.py",prompt)
 
     query_response = llm.invoke(prompt)
 
