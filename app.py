@@ -56,9 +56,9 @@ def convertCode():
     
     python_code = response.get("result", "")
     start_index = python_code.find("$start$") + len("$start$")
-    stop_index = python_code.find("$end$") + len("$end$")
+    stop_index = python_code.find("$end$")
 
-    response = python_code[start_index:stop_index - 5]
+    response = python_code
 
     response = {"result": response}
 
@@ -84,9 +84,9 @@ def generateLegacyDocumentation():
 
     documentation = response.get("result", "")
     start_index = documentation.find("$start$") + len("$start$")
-    stop_index = documentation.find("$end$") + len("$end$")
+    stop_index = documentation.find("$end$")
 
-    documentation = documentation[start_index:stop_index - 5]
+    documentation = documentation[start_index:stop_index]
 
     final_documentation = documentation + "\n\n\n" + query
 

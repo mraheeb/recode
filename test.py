@@ -1,6 +1,11 @@
 import sys
 import os
 import requests
+import pyfiglet
+
+text = "ReCode"
+ascii_art = pyfiglet.figlet_format(text,font="slant")
+print(ascii_art)
 
 def convert_to_python(input_filename, current_languages):
     try:
@@ -29,7 +34,7 @@ def convert_to_python(input_filename, current_languages):
             file_contents = input_file.read()
 
         # Make POST request to the API
-        api_url = "https://3895-202-140-36-183.ngrok-free.app/api/convertCode"
+        api_url = "https://bf7f-202-140-36-183.ngrok-free.app/api/convertCode"
         target_language = "python"
 
         data = {"query": file_contents,

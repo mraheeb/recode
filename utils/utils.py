@@ -24,7 +24,7 @@ def uploadFileToServer(request):
     return None
 
 def translate(query, current_language, target_language, llm):
-    code = "{" + query + "}"
+    code = "{\n" + query + "\n}"
 
 #     prompt = f"""
 # {code}
@@ -49,12 +49,14 @@ def translate(query, current_language, target_language, llm):
 
     prompt = f"""
 {code}
-Identify the language the program is written in; if not a programming language return response as "NOT A PROGRAMMING LANGUAGE".
-After Identifying the language, accurately predict what the program does, dont output it out yet.
-Convert the input code into equivalent {target_language} code, if there are missing code snippets like external library/modules mention it using {target_language} comments.
-The previous prediction also needs to be commented inline where appropriate.
-
-Always enclose the executable {target_language} code within $start$ and $end$.
+In the above code;
+Check for following 3 things:
+1. Identify the {current_language} program's purpose and sketch out a similar pseudo-code.
+2. Identify input parameters, functions, conditions and cases.
+3. Using above points do the following;
+Convert the {current_language} code into similar,equivalent and functional {target_language} code.
+Dont create explicit main function() in generated {target_language} code.
+Always enclose the generated {target_language} code between `$start$` and `$end$`. eg $start$ print("hello world") $end$.
     """
 
 
@@ -70,7 +72,7 @@ def document(query, current_language, llm):
 
     prompt = f"""
 {code}
- Generate documentation for the code and respond back always by enclosing the documentation  $start$ and $end$
+ Generate documentation for the code and respond back always by enclosing the documentation between $start$ and $end$
     """
 
 
@@ -82,7 +84,7 @@ def document(query, current_language, llm):
     return response
 
 def validate(query, current_language, llm):
-    code = "{" + query + "}"
+    code = "{\n" + query + "\n}"
 
     prompt = f"""
 {code}
