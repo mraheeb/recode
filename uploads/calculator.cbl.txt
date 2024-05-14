@@ -1,0 +1,2 @@
+
+This text was added by the uploadFileToServer function.
