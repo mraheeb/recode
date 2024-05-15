@@ -1,24 +1,24 @@
-import os 
+import os
 
-def uploadFileToServer(request):
+def upload_file_to_server(request):
     print("Inside helper function!")
 
     if 'file' not in request.files:
         return "No file part"
-    
+
     file = request.files['file']
 
     if file.filename == '':
         return "No selected file"
-    
+
     if file:
         filename = file.filename
         filepath = os.path.join('uploads', filename)
         print(filepath)
         file.save(filepath)
-        
+
         with open(filepath, 'w') as f:
-            f.write("\nThis text was added by the uploadFileToServer function.")
+            f.write("\nThis text was added by the upload_file_to_server function.")
 
         return filepath
     return None
@@ -26,43 +26,21 @@ def uploadFileToServer(request):
 def translate(query, current_language, target_language, llm):
     code = "{\n" + query + "\n}"
 
-#     prompt = f"""
-# {code}
-# for the given code do as per the given following constraints and respond nothing else other than what i say in the constraints
-# note:Don't respond with anything other than the {target_language} code with proper documentation
-# 1. Check whether the given code is a {current_language} language code or not. If yes, then continue with other constraints and don't respond with anything else other than the generated {target_language} code and the documentation for the code after the code is completely generated and no other words from you. Else stop executing and respond "invalid {current_language} code" and nothing else.
-# 2. The provided {current_language} code snippet must adhere to standard {current_language} syntax and conventions. It should be a syntactically correct {current_language} program.
-# 3. The {target_language} conversion should accurately reflect the functionality of the original {current_language} code. This includes preserving the logic, structure, and behavior of the {current_language} program.
-# 4. Proper documentation, including comments, should be included in the translated {target_language} code. The comments should explain the logic and purpose of the code, as well as any significant differences between the {current_language} and {target_language} versions.
-# 5. The program should handle errors gracefully. If the provided {current_language} code is not valid or encounters issues during conversion, the program should indicate the problem(s) encountered and provide meaningful error messages.
-#     """
-
-#     prompt = f"""
-# {code}
-# Identify the language the program is written in; if not a programming language return response as "NOT A PROGRAMMING LANGUAGE".
-# After Identifying the language, accurately predict what the program does, dont output it out yet.
-# Convert the input code into equivalent python code, if there are missing code snippets like external library/modules mention it using python comments.
-# The previous prediction also needs to be commented inline where appropriate.
-
-# Always enclose the executable python code within $start$ and $end$.
-#     """
-
     prompt = f"""
-{code}
-In the above code;
-Check for following 3 things:
-1. Identify the {current_language} program's purpose.
-2. Identify input parameters, functions, conditions and cases.
-3. Using above points do the following;
-A. Convert the {current_language} code into similar,equivalent and functional {target_language} code.
-B. Dont create explicit main function() in generated {target_language} code.
-C. Prepend `#` character to all non-{target_language} lines of response.
-D.Always enclose the generated {target_language} code between `$start$` and `$end$`. eg $start$ print("hello world") $end$.
+    Convert the provided {current_language} code to equivalent {target_language} code. Ensure the {target_language} code follows {target_language} naming conventions and idiomatic usage of built-in functions. Identify the equivalent entry point to the main function in {target_language}.
+    {code}
     """
-    print("utils.py",prompt)
+#     In the provided code snippet:
+# 1. Determine the purpose of the {current_language} program.
+# 2. Identify input parameters, functions, conditions, and cases.
+# 3. Based on the above, perform the following tasks:
+#    A. Translate the {current_language} code into equivalent {target_language} code maintaining functionality.
+#    B. Avoid creating an explicit main function() in the {target_language} code.
+#    C. Prefix non-{target_language} lines with `#`.
+#    D. Enclose the generated {target_language} code between `$start$` and `$end$`. Example: $start$ print("hello world") $end$.
+#     print("utils.py", prompt)
 
     query_response = llm.invoke(prompt)
-
 
     response = {"result": query_response}
 
@@ -73,12 +51,10 @@ def document(query, current_language, llm):
 
     prompt = f"""
 {code}
- Generate documentation for the code and respond back always by enclosing the documentation between $start$ and $end$
+Generate comprehensive documentation for the code enclosed between $start$ and $end$.
     """
 
-
     query_response = llm.invoke(prompt)
-
 
     response = {"result": query_response}
 
@@ -89,12 +65,10 @@ def validate(query, current_language, llm):
 
     prompt = f"""
 {code}
-Respond back with a one word(Yes/No). Is the given code {code} written in {current_language}
+Provide a one-word response (Yes/No). Is the given code {current_language} syntax?
     """
 
-
     query_response = llm.invoke(prompt)
-
 
     response = {"result": query_response}
 
