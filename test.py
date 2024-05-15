@@ -6,6 +6,7 @@ import sys
 def print_ascii_art(text):
     ascii_art = pyfiglet.figlet_format(text, font="slant")
     print(ascii_art)
+    print("Loading...")
 
 def convert_to_python(input_filename, current_languages):
     try:
